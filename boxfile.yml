@@ -1,0 +1,46 @@
+run.config:
+  engine: python
+  engine.config:
+    runtime: python-2.7
+
+  extra_packages: 
+    - py27-Tk
+    - nodejs
+    - ImageMagick6-6.9.9.20
+    - gettext-tools-0.19.8.1nb1
+    - oracle-jdk8-8.0.151
+
+  cache_dirs:
+    - node_modules
+
+  extra_path_dirs:
+    - node_modules/.bin
+
+  extra_steps:
+    - mkdir -p contentcuration/static/js/bundles
+    - yarn install
+    - node build.js --prod
+
+data.db:
+  image: nanobox/postgresql:9.5
+
+web.main:
+  start:
+    django: gunicorn -c etc/gunicorn.py contentcuration.wsgi:application
+  cwd: 
+    django: contentcuration
+
+deploy.config:
+  extra_steps:
+    - python contentcuration/manage.py collectstatic --noinput
+    - python contentcuration/manage.py collectstatic_js_reverse
+    - ls -l crowdin-cli.jar || curl -L https://storage.googleapis.com/le-downloads/crowdin-cli/crowdin-cli.jar -o crowdin-cli.jar
+    - npm run makemessages
+    - python contentcuration/manage.py makemessages
+    - java -jar crowdin-cli.jar download
+    - python contentcuration/manage.py compilemessages
+
+  before_live:
+    web.main:
+      - python contentcuration/manage.py migrate
+      - python contentcuration/manage.py loadconstants
