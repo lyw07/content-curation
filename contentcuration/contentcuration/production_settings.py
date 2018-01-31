@@ -15,11 +15,11 @@ DATABASES = {
     'default': {
         'ENGINE':
         'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("DB_CREDENTIALS_DBNAME"),
-        'USER': os.getenv("DB_CREDENTIALS_USER"),
-        'PASSWORD': os.getenv("DB_CREDENTIALS_PASSWORD"),
-        'HOST': os.getenv("DB_CREDENTIALS_HOST"),
-        'PORT': int(os.getenv("DB_CREDENTIALS_PORT")),
+        'NAME': 'gonano',
+        'USER': os.environ.get('DATA_DB_USER'),
+        'PASSWORD': os.environ.get('DATA_DB_PASS'),
+        'HOST': os.environ.get('DATA_DB_HOST'),
+        'PORT': '',
         'CONN_MAX_AGE': 600,
     },
     'export_staging': {
