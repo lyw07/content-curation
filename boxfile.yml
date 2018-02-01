@@ -1,5 +1,6 @@
 run.config:
   engine: python
+
   engine.config:
     runtime: python-2.7
 
@@ -9,6 +10,7 @@ run.config:
     - ImageMagick6-6.9.9.20
     - gettext-tools-0.19.8.1nb1
     - oracle-jdk8-8.0.151
+    - nginx
 
   cache_dirs:
     - node_modules
@@ -21,26 +23,40 @@ run.config:
     - yarn install
     - node build.js --prod
 
+
 data.db:
-  image: nanobox/postgresql:9.5
+  image: nanobox/postgresql:9.6
+
+
+data.storage:
+  image: nanobox/unfs:0.9
+
 
 web.main:
   start:
+    nginx: nginx -c /app/contentcuration/etc/nginx.conf
     django: gunicorn -c etc/gunicorn.py contentcuration.wsgi:application
+
   cwd: 
     django: contentcuration
 
-deploy.config:
-  extra_steps:
-    - python contentcuration/manage.py collectstatic --noinput
-    - python contentcuration/manage.py collectstatic_js_reverse
-    - ls -l crowdin-cli.jar || curl -L https://storage.googleapis.com/le-downloads/crowdin-cli/crowdin-cli.jar -o crowdin-cli.jar
-    - npm run makemessages
-    - python contentcuration/manage.py makemessages
-    - java -jar crowdin-cli.jar download
-    - python contentcuration/manage.py compilemessages
+  writable_dirs:
+    - contentworkshop_static/
 
+  network_dirs:
+    data.storage:
+      - contentworkshop_content/
+
+
+deploy.config:
   before_live:
     web.main:
       - python contentcuration/manage.py migrate
       - python contentcuration/manage.py loadconstants
+      - mkdir -p contentworkshop_content/storage/
+      - mkdir -p contentworkshop_content/databases/
+
+  before_live_all:
+    web.main:
+      - python contentcuration/manage.py collectstatic --noinput
+      - python contentcuration/manage.py collectstatic_js_reverse

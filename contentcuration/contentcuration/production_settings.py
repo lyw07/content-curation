@@ -1,9 +1,9 @@
 import os
 from .settings import *
 
-STORAGE_ROOT = "/contentworkshop_content/storage/"
-DB_ROOT = "/contentworkshop_content/databases/"
-STATIC_ROOT = "/contentworkshop_static/"
+STORAGE_ROOT = "/app/contentworkshop_content/storage/"
+DB_ROOT = "/app/contentworkshop_content/databases/"
+STATIC_ROOT = "/app/contentworkshop_static/"
 
 MEDIA_ROOT = STORAGE_ROOT
 
@@ -13,13 +13,12 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 DATABASES = {
     'default': {
-        'ENGINE':
-        'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gonano',
-        'USER': os.environ.get('DATA_DB_USER'),
-        'PASSWORD': os.environ.get('DATA_DB_PASS'),
-        'HOST': os.environ.get('DATA_DB_HOST'),
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DATA_DB_NAME') or 'gonano',
+        'USER': os.environ.get('DATA_DB_USER') or 'learningequality',
+        'PASSWORD': os.environ.get('DATA_DB_PASS') or '',
+        'HOST': os.environ.get('DATA_DB_HOST') or '127.0.0.1',
+        'PORT': os.environ.get('DATA_DB_PORT') or '5432',
         'CONN_MAX_AGE': 600,
     },
     'export_staging': {
