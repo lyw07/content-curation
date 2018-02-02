@@ -29,7 +29,8 @@ DATABASES = {
 
 # celery settings
 BROKER_URL = os.getenv("CELERY_BROKER_URL") or BROKER_URL
-CELERY_RESULT_BACKEND = (os.getenv("CELERY_RESULT_BACKEND_URL")
+BROKER_URL = "redis://{ip}:6379".format(ip=os.getenv("DATA_REDIS_HOST"))
+CELERY_RESULT_BACKEND = ("redis://{ip}:6379".format(ip=os.getenv("DATA_REDIS_HOST"))
                          or CELERY_RESULT_BACKEND)
 CELERY_TIMEZONE = os.getenv("CELERY_TIMEZONE") or CELERY_TIMEZONE
 
