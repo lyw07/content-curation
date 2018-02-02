@@ -1,6 +1,10 @@
 prodceleryworkers:
 	cd contentcuration/ && celery -A contentcuration worker -l info
 
+setupdryrun:
+	nanobox evar add dry-run DJANGO_SETTINGS_MODULE=contentcuration.dry_run_settings
+
+
 collectstatic: migrate
 	python contentcuration/manage.py collectstatic --noinput
 	python contentcuration/manage.py collectstatic_js_reverse
