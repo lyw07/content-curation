@@ -31,6 +31,9 @@ data.db:
 data.storage:
   image: nanobox/unfs:0.9
 
+data.redis:
+  image: nanobox/redis:4.0
+
 
 web.main:
   start:
