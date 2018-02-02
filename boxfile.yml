@@ -51,6 +51,19 @@ web.main:
       - contentworkshop_content/
 
 
+worker.publishing:
+  start:
+    main: celery -A contentcuration worker -l info
+
+  cwd: 
+    main: contentcuration
+
+
+  network_dirs:
+    data.storage:
+      - contentworkshop_content/
+
+
 deploy.config:
   before_live:
     web.main:
