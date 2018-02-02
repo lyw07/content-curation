@@ -1,6 +1,3 @@
-prodserver: migrate collectstatic ensurecrowdinclient downloadmessages compilemessages
-	cd contentcuration/ && gunicorn contentcuration.wsgi:application --timeout=500 --error-logfile=/var/log/gunicorn-error.log --workers=3 --bind=0.0.0.0:8000 --pid=/tmp/contentcuration.pid --log-level=debug || sleep infinity
-
 prodceleryworkers:
 	cd contentcuration/ && celery -A contentcuration worker -l info
 
@@ -31,17 +28,6 @@ downloadmessages: ensurecrowdinclient makemessages
 
 compilemessages:
 	python contentcuration/manage.py compilemessages
-
-devserver:
-	cd contentcuration && python manage.py runserver --settings=contentcuration.dev_settings 0.0.0.0:8000
-
-vagrantdevserver:
-	echo "Server to run on 192.168.31.9:8000"
-	vagrant ssh -c 'cd /vagrant/contentcuration;python manage.py runserver --settings=contentcuration.dev_settings 0.0.0.0:8000;cd -;'
-
-vagrantceleryworkers:
-	echo "Starting up celery workers"
-	vagrant ssh -c 'cd /vagrant/contentcuration;DJANGO_SETTINGS_MODULE=contentcuration.dev_settings celery -A contentcuration worker -l info;cd -;'
 
 # When using apidocs, this should clean out all modules
 clean-docs:
