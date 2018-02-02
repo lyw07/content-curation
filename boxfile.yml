@@ -31,6 +31,9 @@ data.db:
 data.storage:
   image: nanobox/unfs:0.9
 
+data.redis:
+  image: nanobox/redis:4.0
+
 
 web.main:
   start:
@@ -42,6 +45,19 @@ web.main:
 
   writable_dirs:
     - contentworkshop_static/
+
+  network_dirs:
+    data.storage:
+      - contentworkshop_content/
+
+
+worker.publishing:
+  start:
+    main: celery -A contentcuration worker -l info
+
+  cwd: 
+    main: contentcuration
+
 
   network_dirs:
     data.storage:
