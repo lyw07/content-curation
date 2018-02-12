@@ -1,7 +1,7 @@
 import os
 from .settings import *
 
-STORAGE_ROOT = "/app/contentworkshop_content/storage/"
+STORAGE_ROOT = "storage/"
 DB_ROOT = "/app/contentworkshop_content/databases/"
 STATIC_ROOT = "/app/contentworkshop_static/"
 
@@ -14,11 +14,11 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATA_DB_NAME') or 'gonano',
-        'USER': os.environ.get('DATA_DB_USER') or 'learningequality',
-        'PASSWORD': os.environ.get('DATA_DB_PASS') or '',
-        'HOST': os.environ.get('DATA_DB_HOST') or '127.0.0.1',
-        'PORT': os.environ.get('DATA_DB_PORT') or '5432',
+        'NAME': os.environ.get('DATA_EXTERNAL_NAME') or os.environ.get('DATA_DB_NAME') or 'gonano',
+        'USER': os.environ.get('DATA_EXTERNAL_USER') or os.environ.get('DATA_DB_USER') or 'learningequality',
+        'PASSWORD': os.environ.get('DATA_EXTERNAL_PASS') or os.environ.get('DATA_DB_PASS') or '',
+        'HOST': os.environ.get('DATA_EXTERNAL_HOST') or os.environ.get('DATA_DB_HOST') or '127.0.0.1',
+        'PORT': os.environ.get('DATA_EXTERNAL_PORT') or os.environ.get('DATA_DB_PORT') or '5432',
         'CONN_MAX_AGE': 600,
     },
     'export_staging': {

@@ -122,8 +122,8 @@ class FileListSerializer(serializers.ListSerializer):
                         if attr != "preset" and attr != "language":
                             setattr(file_obj, attr, value)
                     file_path = generate_file_on_disk_name(file_obj.checksum, str(file_obj))
-                    if os.path.isfile(file_path):
-                        file_obj.file_on_disk = DjFile(open(file_path, 'rb'))
+                    if file_obj.file_on_disk.storage.exists(file_path):
+                        file_obj.file_on_disk = file_obj.file_on_disk.storage.open(file_path, 'rb')
                     else:
                         raise OSError("Error: file {} was not found".format(str(file_obj)))
                     file_obj.uploaded_by = file_obj.uploaded_by or user
@@ -145,10 +145,11 @@ class FileSerializer(BulkSerializerMixin, serializers.ModelSerializer):
         return super.get(*args, **kwargs)
 
     def get_file_url(self, obj):
-        return obj.file_on_disk.url
+        h, ext = str(obj).split(".")
+        return "{}{}/{}/{}".format(settings.STORAGE_ROOT, h[0], h[1], str(obj))
 
     def retrieve_storage_url(self, obj):
-        return generate_storage_url(str(obj))
+        return generate_storage_url(str(obj), obj)
 
     def retrieve_extension(self, obj):
         return obj.file_format.mimetype

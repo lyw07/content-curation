@@ -11,7 +11,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, MultipleObjectsReturned
-from django.core.files.storage import FileSystemStorage
+from storages.backends.gcloud import GoogleCloudStorage
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db import IntegrityError, connections, models, connection
 from django.db.models import Q, Sum, Max, Count, Case, When, IntegerField, F, FloatField
@@ -232,19 +232,20 @@ def generate_file_on_disk_name(checksum, filename):
     """ Separated from file_on_disk_name to allow for simple way to check if has already exists """
     h = checksum
     basename, ext = os.path.splitext(filename)
-    directory = os.path.join(settings.STORAGE_ROOT, h[0], h[1])
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    return os.path.join(directory, h + ext.lower())
+    return "{}{}/{}/{}".format(settings.STORAGE_ROOT, h[0], h[1], h + ext.lower())
 
 
-def generate_storage_url(filename):
+def generate_storage_url(filename, instance=None):
     """ Returns place where file is stored """
     h, ext = os.path.splitext(filename)
-    return "{}/{}/{}/{}".format(settings.STORAGE_URL.rstrip('/'), h[0], h[1], h + ext.lower())
+    if instance is None:
+        storage = FileOnDiskStorage()
+        return storage.url(os.path.join(settings.STORAGE_ROOT, h[0], h[1], filename))
+
+    return instance.file_on_disk.storage.url(os.path.join(settings.STORAGE_ROOT, h[0], h[1], filename))
 
 
-class FileOnDiskStorage(FileSystemStorage):
+class FileOnDiskStorage(GoogleCloudStorage):
     """
     Overrider FileSystemStorage's default save method to ignore duplicated file.
     """

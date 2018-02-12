@@ -36,3 +36,5 @@ sphinx==1.6.4
 sphinx-autobuild==0.7.1
 sphinx_rtd_theme
 sphinx-intl
+django-storages
+google-cloud-storage

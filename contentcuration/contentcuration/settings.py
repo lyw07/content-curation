@@ -54,7 +54,8 @@ INSTALLED_APPS = (
     'email_extras',
     'le_utils',
     'rest_framework.authtoken',
-    'search'
+    'search',
+    'storages'
 )
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
@@ -236,3 +237,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
+
+# GOOGLE CLOUD STORAGE SETTINGS
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'kolibri-studio-content'
+GS_PROJECT_ID = 'nanobox-194019'
+GS_CRENDENTIALS = '/app/nanobox-2e573771bb80.json'

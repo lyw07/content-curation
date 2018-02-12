@@ -128,7 +128,7 @@ def generate_thumbnail(request):
         return HttpResponse(json.dumps({
             "success": True,
             "file": JSONRenderer().render(FileSerializer(thumbnail_object).data),
-            "path": generate_storage_url(str(thumbnail_object)),
+            "path": generate_storage_url(str(thumbnail_object), thumbnail_object),
         }))
 
 @authentication_classes((TokenAuthentication, SessionAuthentication))
@@ -145,7 +145,7 @@ def thumbnail_upload(request):
             "success": True,
             "formatted_filename": formatted_filename,
             "file": None,
-            "path": generate_storage_url(formatted_filename),
+            "path": generate_storage_url(formatted_filename, fobj),
         }))
 
 @authentication_classes((TokenAuthentication, SessionAuthentication))
@@ -169,7 +169,7 @@ def image_upload(request):
         return HttpResponse(json.dumps({
             "success": True,
             "file": JSONRenderer().render(FileSerializer(file_object).data),
-            "path": generate_storage_url(str(file_object)),
+            "path": generate_storage_url(str(file_object), file_object),
         }))
 
 @authentication_classes((TokenAuthentication, SessionAuthentication))
@@ -189,5 +189,5 @@ def exercise_image_upload(request):
             "success": True,
             "formatted_filename": exercises.CONTENT_STORAGE_FORMAT.format(str(file_object)),
             "file_id": file_object.pk,
-            "path": generate_storage_url(str(file_object)),
+            "path": generate_storage_url(str(file_object), file_object),
         }))
