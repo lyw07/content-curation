@@ -65,6 +65,9 @@ worker.publishing:
 
 
 deploy.config:
+  transform:
+    - echo "$GOOGLE_APPLICATION_CREDENTIALS_FILE" > "$GOOGLE_APPLICATION_CREDENTIALS"
+
   before_live:
     web.main:
       - python contentcuration/manage.py migrate
