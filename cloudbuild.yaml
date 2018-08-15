@@ -49,7 +49,7 @@ steps:
   id: create-new-database
   waitFor: ['-']
   args: [
-  'sql', 'databases', 'create', '$BRANCH_NAME', '--instance=studio-qa'
+  'sql', 'databases', 'create', '$BRANCH_NAME', '--instance=develop'
   ]
 
 - name: 'gcr.io/$PROJECT_ID/helm'
