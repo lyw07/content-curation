@@ -2,7 +2,7 @@ set -e
 
 BRANCH=$1
 INSTANCE=$2
-
+echo "Checking databases"
 DATABASES=`gcloud sql databases list --instance=${INSTANCE} | awk '{print $1}' | tail -n +2`
 
 EXISTENCE=False
