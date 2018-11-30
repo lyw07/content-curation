@@ -532,8 +532,10 @@ def convert_data_to_nodes(user, content_data, parent_node):
         existing_node_ids = ContentNode.objects.filter(parent_id=parent_node.pk).values_list('node_id', flat=True)
         with transaction.atomic():
             for node_data in content_data:
+                print ("OUTSIDE IF STATEMENT!!!!!")
                 # Check if node id is already in the tree to avoid duplicates
                 if node_data['node_id'] not in existing_node_ids:
+                    print ("THIS IS INSIDE IF STATEMENT!!")
                     # Create the node
                     new_node = create_node(node_data, parent_node, sort_order)
 
