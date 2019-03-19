@@ -1,25 +1,19 @@
 set -e
 
-BRANCH=$1
-PROJECT=$2
+USERNAME=$1
+BRANCH=$2
 
-# Use instance `develop` when in project `studio`. Use instance `studio-qa`
-# when in project `ops-central`
-if [[ ${PROJECT} = "contentworkshop-159920" ]];
-then
-	INSTANCE="develop"
-else
-	INSTANCE="studio-qa"
-fi
+INSTANCE="studio-pr-demo"
+DBNAME="${USERNAME}-${BRANCH}"
 
 DATABASES=`gcloud sql databases list --instance=${INSTANCE} | awk '{print $1}' | tail -n +2`
 
 EXISTENCE=False
 
 for word in ${DATABASES}; do
-    if [[ ${word} = ${BRANCH} ]];
+    if [[ ${word} = ${DBNAME} ]];
     then
-        echo "Database ${BRANCH} exists in SQL instance ${INSTANCE}."
+        echo "Database ${DBNAME} exists in SQL instance ${INSTANCE}."
         EXISTENCE=True
         break
     fi
@@ -28,6 +22,6 @@ done
 
 if [[ ${EXISTENCE} = False ]];
 then
-    echo "Creating database ${BRANCH} in SQL instance ${INSTANCE}."
-    gcloud sql databases create ${BRANCH} --instance=${INSTANCE}
+    echo "Creating database ${DBNAME} in SQL instance ${INSTANCE}."
+    gcloud sql databases create ${DBNAME} --instance=${INSTANCE}
 fi
