@@ -27,6 +27,10 @@ SENTRY_DSN_KEY=${14}
 RELEASENAME="${USERNAME}-${BRANCH}"
 RELEASENAME_REPLACE_UNDERSCORE="${RELEASENAME//_/-}"
 
+echo "$GCS_SERVICE_ACCOUNT_JSON"
+echo "Test"
+echo "$(base64 $GCS_SERVICE_ACCOUNT_JSON --wrap=0)"
+
 helm upgrade --install $RELEASENAME_REPLACE_UNDERSCORE . \
      -f values-prod-config.yaml \
      --set studioApp.imageName=gcr.io/$PROJECT_ID/learningequality-studio-app:$COMMIT \

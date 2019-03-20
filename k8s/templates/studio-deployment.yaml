@@ -74,6 +74,7 @@ spec:
         - name: gdrive-creds
           secret:
             secretName: {{ template "studio.fullname" . }}-gdrive
+            optioal: true
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
