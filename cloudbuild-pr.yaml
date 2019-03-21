@@ -75,7 +75,6 @@ steps:
       $COMMIT_SHA
       $$POSTMARK_API_KEY
       postgres
-      $BRANCH_NAME
       postgres
       $PROJECT_ID-studio-qa-sql-proxy-gcloud-sqlproxy.sqlproxy
       ../gcs-service-account.json
