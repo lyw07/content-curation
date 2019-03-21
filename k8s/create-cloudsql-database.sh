@@ -3,7 +3,7 @@ set -e
 USERNAME=$1
 BRANCH=$2
 
-INSTANCE="studio-pr-demo"
+INSTANCE="studio-qa"
 DBNAME="${USERNAME}-${BRANCH}"
 
 DATABASES=`gcloud sql databases list --instance=${INSTANCE} | awk '{print $1}' | tail -n +2`
