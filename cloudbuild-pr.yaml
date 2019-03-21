@@ -77,7 +77,7 @@ steps:
       postgres
       $BRANCH_NAME
       postgres
-      $PROJECT_ID-studio-qa-sql-proxy-gcloud-sqlproxy.sqlproxy
+      $PROJECT_ID-studio-pr-demo-sql-proxy-gcloud-sqlproxy.sqlproxy
       ../gcs-service-account.json
       $PROJECT_ID
       is_production
