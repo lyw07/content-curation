@@ -30,6 +30,7 @@ steps:
   id: push-app-image
   waitFor: ['build-app-image']
   args: ['push', 'gcr.io/$PROJECT_ID/learningequality-studio-app:$COMMIT_SHA']
+
 - name: 'gcr.io/cloud-builders/docker'
   id: push-nginx-image
   waitFor: ['build-nginx-image']
@@ -79,6 +80,11 @@ steps:
       $PROJECT_ID-studio-qa-sql-proxy-gcloud-sqlproxy.sqlproxy
       ../gcs-service-account.json
       $PROJECT_ID
+
+- name: 'gcr.io/cloud-builders/gsutil'
+  id: remove-tarball-in-gcs
+  waitFor: ['helm-deploy-studio-instance']
+  args: ['rm', 'gs://studio-pull-request/${_USER_NAME}-${REPO_NAME}-${BRANCH_NAME}-${COMMIT_SHA}.tar.gz']
 
 timeout: 3600s
 secrets:
