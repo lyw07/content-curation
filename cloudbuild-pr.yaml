@@ -82,7 +82,7 @@ steps:
       $PROJECT_ID
 
 - name: 'gcr.io/cloud-builders/gsutil'
-  id: delete-tarball-in-gcs
+  id: remove-tarball-in-gcs
   waitFor: ['helm-deploy-studio-instance']
   args: ['rm', 'gs://studio-pull-request/${_USER_NAME}-${REPO_NAME}-${BRANCH_NAME}-${COMMIT_SHA}.tar.gz']
 
