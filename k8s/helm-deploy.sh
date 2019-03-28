@@ -27,7 +27,7 @@ POSTGRES_DATABASE="${USERNAME}-${BRANCH}"
 RELEASENAME="${POSTGRES_DATABASE//_/-}"
 
 
-helm upgrade $RELEASENAME . --install \
+helm upgrade --install $RELEASENAME . \
      -f values-prod-config.yaml \
      --set studioApp.imageName=gcr.io/$PROJECT_ID/learningequality-studio-app:$COMMIT \
      --set studioNginx.imageName=gcr.io/$PROJECT_ID/learningequality-studio-nginx:$COMMIT \
