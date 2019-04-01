@@ -70,12 +70,12 @@ steps:
     - >
       /builder/helm.bash &&
       ./helm-deploy.sh
-      $_USER_NAME
-      $BRANCH_NAME
+      $_RELEASE_NAME
       studio-pr-demo
       $COMMIT_SHA
       $$POSTMARK_API_KEY
       postgres
+      ${_USER_NAME}-${BRANCH_NAME}
       postgres
       $PROJECT_ID-studio-qa-sql-proxy-gcloud-sqlproxy.sqlproxy
       ../gcs-service-account.json
