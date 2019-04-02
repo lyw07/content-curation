@@ -53,7 +53,7 @@ steps:
   entrypoint: 'bash'
   args: [
   '-c',
-  './create-cloudsql-database.sh $_USER_NAME $BRANCH_NAME'
+  './create-cloudsql-database.sh $_RELEASE_NAME $_DATABASE_INSTANCE_NAME'
   ]
 
 - name: 'gcr.io/$PROJECT_ID/helm'
@@ -71,20 +71,20 @@ steps:
       /builder/helm.bash &&
       ./helm-deploy.sh
       $_RELEASE_NAME
-      studio-pr-demo
+      $_STORAGE_BUCKET
       $COMMIT_SHA
       $$POSTMARK_API_KEY
-      postgres
-      ${_USER_NAME}-${BRANCH_NAME}
-      postgres
-      $PROJECT_ID-studio-qa-sql-proxy-gcloud-sqlproxy.sqlproxy
+      $_POSTGRES_USERNAME
+      $_RELEASE_NAME
+      $_POSTGRES_PASSWORD
+      $PROJECT_ID-$_DATABASE_INSTANCE_NAME-sql-proxy-gcloud-sqlproxy.sqlproxy
       ../gcs-service-account.json
       $PROJECT_ID
 
 - name: 'gcr.io/cloud-builders/gsutil'
   id: remove-tarball-in-gcs
   waitFor: ['helm-deploy-studio-instance']
-  args: ['rm', 'gs://studio-pull-request/${_USER_NAME}-${REPO_NAME}-${BRANCH_NAME}-${COMMIT_SHA}.tar.gz']
+  args: ['rm', $_TARBALL_LOCATION]
 
 timeout: 3600s
 secrets:
