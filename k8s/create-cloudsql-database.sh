@@ -17,7 +17,6 @@ for word in ${DATABASES}; do
     fi
 done
 
-
 if [[ ${EXISTENCE} = False ]];
 then
     echo "Creating database ${DBNAME} in SQL instance ${INSTANCE}."
